@@ -105,10 +105,36 @@ int nb_voyelles(char *chaine){
         // c in 'aeiouy' ?  oui -> pointeur vers ce caractere / non -> renvoie NULL
         if (strchr("aeiouy", c) != NULL) {
             buffer++;
-        }
         chaine++;
+        }
     }
     return buffer;
+}
+
+
+void retirer_espaces(char *s){
+    char *lecture = s;
+    char *ecriture = s; 
+    // on réecrit tout par dessus notre texte de base ( sans les espaces )
+    while (*lecture != '\0'){
+        if (*lecture != ' '){
+            *ecriture = *lecture;
+            *ecriture++;
+        }
+        *lecture++ ;
+    }
+    *ecriture = '\0';
+}
+
+
+int min_p(int tab[], int n){
+    int *min = tab;
+    for(int i=0; i<n; i++){
+        if(*min > tab[i]){
+            *min = tab[i];
+        }
+    }
+    return min;
 }
 
 
@@ -159,9 +185,26 @@ int main(){
     printf("il y a %d voyelles dans la chaine\n", nb_voyelles(s));
     */
 
-    // 9 / 10 voir feulle bonus.md
-
+    /* // 9 
+    char chaine[] = "Hello world o/ ! ";
+    // je viens de découvrir la fameuse difference entre *chaine et chaine[]  (je hais les docs)
+    // *chaine -> pointeur vers une chaine en mode lecture seule
+    // chaine[] -> tab de caractere ( la base ) donc modifiable 
+    printf("chaine de base : %s\n", chaine);
+    retirer_espaces(chaine);
+    printf("chaine sans espaces : %s\n", chaine);
+    */
     
+    /* // 10 
+    int tab[] = {25, 50, 75, 100};
+    int *p_min = min_p(tab, 4);
 
+    if (p_min != NULL){
+        int indice = p_min - tab;
+        printf("minimum : %d\n", *p_min);
+        printf("indice : %d\n", indice);
+    }
+    */
+    
     return 0;
 }
