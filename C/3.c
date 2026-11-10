@@ -105,8 +105,8 @@ int nb_voyelles(char *chaine){
         // c in 'aeiouy' ?  oui -> pointeur vers ce caractere / non -> renvoie NULL
         if (strchr("aeiouy", c) != NULL) {
             buffer++;
-        chaine++;
         }
+        chaine++;
     }
     return buffer;
 }
