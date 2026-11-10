@@ -55,6 +55,63 @@ int moyenne(int tab[], int n){
 }
 
 
+void afficherTab(int tab[], int n) {
+    // print(tab) btw (zbi)
+    for (int i = 0; i < n; i++){
+        printf("%d ", tab[i]);
+    }
+    printf("\n");
+}
+
+
+void inverser(int tab[], int n){
+    // obligé de mettre n pour droite ( int **droite = &tab[-1]; )
+    // error: initialization of ‘int **’ from incompatible pointer type ‘int *’ 
+    int *droite = &tab[n-1];
+    int *gauche = tab;
+    int temp;
+    while(gauche < droite){
+        temp = *droite;
+        *droite = *gauche;
+        *gauche = temp;
+        gauche ++;
+        droite --;
+    }
+}
+
+
+int len(char *s){
+    int compteur = 0;
+    while (*s!='\0'){
+        s++; // comme c'est un tableau de plusieurs caracteres ca marche :D
+        compteur++;
+    }
+    return compteur;
+}
+
+
+void copier(char *copie, char *base){
+    for(int i = 0 ; i <= len(base) ; i++ ){ 
+        // on recupere le \0 pour mettre une fin à notre copie 
+        copie[i] = base[i]; 
+    }
+}
+
+
+int nb_voyelles(char *chaine){
+    int buffer = 0;
+    while(*chaine != '\0'){
+        char c = tolower(*chaine);
+        // c in 'aeiouy' ?  oui -> pointeur vers ce caractere / non -> renvoie NULL
+        if (strchr("aeiouy", c) != NULL) {
+            buffer++;
+        }
+        chaine++;
+    }
+    return buffer;
+}
+
+
 int main(){
     // 1
     // test();
@@ -72,8 +129,39 @@ int main(){
     minetmax(tab, 4, &min, &max);
     printf("min : %d\nmax : %d\n", min, max);
     */
-
+    
+    /* // 4 
     int tab[] = {25, 50, 75, 100};
+    printf("somme : %d\nmoyenne : %d\n", somme(tab, 4), moyenne(tab, 4));
+    */
+
+    /* // 5
+    int tab[] = {25, 50, 75, 100};
+    inverser(tab, 4);
+    printf("tableau inversé !\n");
+    afficherTab(tab, 4);    
+    */
+
+    /* // 6
+    char *chaine = "Hello World!";
+    printf("il y a %d caract dans la chaine\n", len(chaine));
+    */
+
+    /* // 7 
+    char *base = "blabla";
+    char copie[100]; // Segmentation fault (core dumped) :(
+    copier(copie, base);
+    printf("copie de la chaine : %s\n", copie);
+    */
+
+    /* // 8
+    char *s = "hello";
+    printf("il y a %d voyelles dans la chaine\n", nb_voyelles(s));
+    */
+
+    // 9 / 10 voir feulle bonus.md
+
+    
 
     return 0;
 }
