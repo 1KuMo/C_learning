@@ -375,7 +375,7 @@ void inverser_mots(char s[]){
             estEspace = true;
         }
 
-        else if(*l = ' '){
+        else if(*l == ' '){
             l++;
             e++;
         }
