@@ -73,7 +73,7 @@ void trier_tab(int tab[], int n){
 
 
 int afficher_tab(int *tab, int taille){ // rappel : [] pour modifier et * pour lire
-    // int taille = sizeof(tab) / sizeof(tab[0]); 
+    // int taille = sizeof(tab) / sizeof(tab[0]); ??
     for(int i = 0; i < taille; i++ ){
         printf("%d ", tab[i]);
     }
@@ -128,7 +128,7 @@ void fusionner(int tab1[], int taille1, int tab2[], int taille2){
         curnew++;
     }
 
-    // il reste maintenant à vider la bonne liste dans newtab
+    // il reste maintenant à vider la bonne liste dans newtab ( et à sécher mes larmes )
     if (cur2 == &tab2[taille2]){
         printf("1-");
         while(cur1 <= &tab1[taille1-1]){
@@ -289,7 +289,7 @@ void optiEspaces(char s[]){
 
 
 
-// EXERCICE E - heure début : 11h30 -- heure fin : 12h50
+// EXERCICE E - heure début : 11h30 -- heure fin : Jamais
 /*
 Énoncé : Écrire inverser_mots(char *s) pour inverser l'ordre des mots d'une phrase en place.
 
@@ -311,10 +311,11 @@ void inverser_mots(char s[]){
         on a 2 pointeurs, l et e 
         on fait premierement avancer l et e jusqu'au début du premier mot ( on ignore les espaces au début )
         une fois qu'on arrive à ce mot, on avance uniquement l jusqu'à la fin de ce mot 
-        une fois arrivé à la fin du mot, on refait partir l en arrière jusquà la 'fin' du mot 
-        tout en avancant e et en écrivant le caractère positionné sur l à chaque fois
-            une fois le mot réecrit, on échange les positions de l et e puis on recommence
+        une fois arrivé à la fin du mot, on refait partir l en arrière avec le meme principe
+        que les autres exercices ( while e < l )
+            une fois le mot réecrit, on replace e et l au début du prochain mot et on recommence
                 une complexité déplorable mais ca a le mérite de marcher
+                (je détaille pas les 800 cas limites l'implémentation de ce truc m'a fait mal au crane)
     */
 
     // on récupère la taille de la chaine
@@ -329,16 +330,16 @@ void inverser_mots(char s[]){
     char *droite = &s[taille-1];
     char temp;
 
-    // on gère les cas où le 1er / dernier caractere sont des espaces
-    if(*gauche==' '){
+    // on gère les cas où le(s) 1er / dernier(s) caractere(s) sont des espaces
+    while (*gauche == ' '){
         gauche++;
     }
 
-    if(*droite==' '){
-        droite++;
+    while(droite >= s && *droite == ' '){
+        droite--;
     }
 
-    // in inverse la chaine
+    // on inverse la chaine
     while(gauche<droite){
         temp = *gauche ;
         *gauche = *droite;
@@ -348,7 +349,7 @@ void inverser_mots(char s[]){
     }
     printf("%s\n", s);
 
-    // true hell
+    // true spaghetti
     char *l = s;
     char *e = s;
     char *t;
@@ -356,30 +357,51 @@ void inverser_mots(char s[]){
     bool estEspace = true;
     while(*l!='\0'){
         if(*l!=' '){
+            if (estEspace){
+                e = l;
+            }
             estEspace = false;
-            l++;
-            e++;
+            /* 
+            je laisse la ligne suivante en tant que trophée de ligne qui m'a
+            fait perdre le plus de temps de ma vie ( 40min+ ( j'ai 3 de qi ))
+            */
+            // e++;
         }
 
         else if(*l==' ' && !estEspace){
+            printf("0");
             estEspace = true;
             t=l;
+            l--;
             while(e<l){
+                printf("-1\n");
                 tempo = *e;
                 *e = *l;
                 *l = tempo;
                 e++;
                 l--;
             }
-            l, e = t;
+            e = t+ 1 ;
+            l = t;
             estEspace = true;
         }
 
-        else if(*l == ' '){
-            l++;
-            e++;
+        l++;
+
+        if(*l == '\0' && !estEspace){
+            estEspace = true;
+            t=l;
+            l--;
+            while(e<l){
+                printf("-2\n");
+                tempo = *e;
+                *e = *l;
+                *l = tempo;
+                e++;
+                l--;
+            }
+            break;
         }
-        
     }
 }
 
@@ -427,7 +449,7 @@ int main(){
     return 0;
     */
 
-    char phrase[] = " Hello world boop";
+    char phrase[] = " Hello   world  boop ";
     inverser_mots(phrase);
     printf("%sf\n", phrase);
     return 0;
