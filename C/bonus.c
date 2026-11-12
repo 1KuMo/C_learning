@@ -33,9 +33,9 @@ void swap(int *x, int *y){
 void trier_tab(int tab[], int n){
     /*
     4 cas : 
-      - gauche impair et droite pair -> on les échanges
-      - gauche pair et droite impair -> on touche rien
-      - gauche impair et droite impair OU gauche pair et droite pair -> on arrete un des deux pointeurs à sa position actuelle
+- gauche impair et droite pair -> on les échanges
+- gauche pair et droite impair -> on touche rien
+- gauche impair et droite impair OU gauche pair et droite pair -> on arrete un des deux pointeurs à sa position actuelle
         (celui dont la valeur n'est pas correctement placée) puis on attend une opportunité :
             si on en a pas dans la suite ; c'est qu'il était au bon endroit ( tous ceux d'avant / après étaient pairs / impair ( il faisait la coupure ))
     */
@@ -182,9 +182,9 @@ char* trouverSub(char s[], char sub[]){
         et en vérifiant la correspondance entre 
         les caractères de s et sub depuis la lettre trouvée
             cas d'arrêts : 
-              - on a fini de parcourir s 
-              - on a fini de parcourir sub 
-              - erreur fatale ( ; manquant ) qui me fait partir pleurer
+- on a fini de parcourir s 
+- on a fini de parcourir sub 
+- erreur fatale ( ; manquant ) qui me fait partir pleurer
     */
     char *curs = s;
     char *cursub = sub;
@@ -288,6 +288,104 @@ void optiEspaces(char s[]){
 }
 
 
+
+// EXERCICE E - heure début : 11h30 -- heure fin : 12h50
+/*
+Énoncé : Écrire inverser_mots(char *s) pour inverser l'ordre des mots d'une phrase en place.
+
+Contraintes :
+
+    En place (pas de tableau de stockage secondaire).
+
+    Zéro crochet [] (uniquement des pointeurs et de l'arithmétique d'adresses).
+
+*/
+
+
+void inverser_mots(char s[]){
+
+    /*
+    cque je propose est terrifiant 
+    on va inverser toute la chaine comme précédemment
+    puis on va inverser chaque mot d'une manière terrible
+        on a 2 pointeurs, l et e 
+        on fait premierement avancer l et e jusqu'au début du premier mot ( on ignore les espaces au début )
+        une fois qu'on arrive à ce mot, on avance uniquement l jusqu'à la fin de ce mot 
+        une fois arrivé à la fin du mot, on refait partir l en arrière jusquà la 'fin' du mot 
+        tout en avancant e et en écrivant le caractère positionné sur l à chaque fois
+            une fois le mot réecrit, on échange les positions de l et e puis on recommence
+                une complexité déplorable mais ca a le mérite de marcher
+    */
+
+    // on récupère la taille de la chaine
+    char *c = s;
+    int taille = 0;
+    while(*c!='\0'){
+        taille++;
+        c++;
+    }
+
+    char *gauche = s;
+    char *droite = &s[taille-1];
+    char temp;
+
+    // on gère les cas où le 1er / dernier caractere sont des espaces
+    if(*gauche==' '){
+        gauche++;
+    }
+
+    if(*droite==' '){
+        droite++;
+    }
+
+    // in inverse la chaine
+    while(gauche<droite){
+        temp = *gauche ;
+        *gauche = *droite;
+        *droite = temp;
+        droite--;
+        gauche++;
+    }
+    printf("%s\n", s);
+
+    // true hell
+    char *l = s;
+    char *e = s;
+    char *t;
+    char tempo;
+    bool estEspace = true;
+    while(*l!='\0'){
+        if(*l!=' '){
+            estEspace = false;
+            l++;
+            e++;
+        }
+
+        else if(*l==' ' && !estEspace){
+            estEspace = true;
+            t=l;
+            while(e<l){
+                tempo = *e;
+                *e = *l;
+                *l = tempo;
+                e++;
+                l--;
+            }
+            l, e = t;
+            estEspace = true;
+        }
+
+        else if(*l = ' '){
+            l++;
+            e++;
+        }
+        
+    }
+}
+
+
+
+
 int main(){
     /*
     int tab[]={1,2,3,4,5,6,7,8,9};
@@ -316,6 +414,7 @@ int main(){
     return 0;
     */
 
+    /*
     char texte[] = " WROUF   meow  tchiki brr ";
     char texte2[] = "hello world ";
     char texte3[] = "   ";
@@ -326,10 +425,10 @@ int main(){
     optiEspaces(texte4);
     printf("%sf\n%sf\n%sf\n%sf\n", texte, texte2, texte3, texte4);
     return 0;
+    */
+
+    char phrase[] = " Hello world boop";
+    inverser_mots(phrase);
+    printf("%sf\n", phrase);
+    return 0;
 }
-/*
-Conclusion ;
-    je hais les chaines
-    je hais les pointeurs
-    je déteste le C 
-*/
